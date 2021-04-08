@@ -8,11 +8,11 @@ const Signup = () => {
   const [password, setPassword] = useState('')
   const history = useHistory()
   const signup = async () => {
-    try {
-      await axios.post('/account/signup', { username, password })
-      history.push('/')
-    } catch (err) {
+    const data = await axios.post('/account/signup', { username, password })
+    if (typeof data.data === 'string' && data.data.startsWith('ERROR:')) {
       alert('An error occured while signing up')
+    } else {
+      history.push('/')
     }
   }
   return (

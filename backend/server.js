@@ -16,7 +16,7 @@ mongoose.connect(MONGO_URI, {
 })
 
 const errorHandle = (err, req, res, next) => {
-  res.status(500).send(err.toString())
+  res.status(200).send(`ERROR: ${err}`)
 }
 
 app.use(cookieSession({

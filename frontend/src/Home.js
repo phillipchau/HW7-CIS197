@@ -19,30 +19,31 @@ const Home = () => {
   const history = useHistory()
 
   const submitResponse = async () => {
-    try {
-      const { status } = await axios.post('/api/questions/answer', { _id, answer })
+    const data = await axios.post('/api/questions/answer', { _id, answer })
+    if (typeof data.data === 'string' && data.data.startsWith('ERROR:')) {
+      alert('ERROR while answering question')
+    } else {
       setResponse(answer)
       setAnswer('')
-    } catch (err) {
-      alert('ERROR while answering question')
     }
   }
 
   const getLog = async () => {
-    try {
-      const logdata = await axios.get('/account/logstatus')
-      setLogin(logdata.data.user)
-    } catch (err) {
+    const logdata = await axios.get('/account/logstatus')
+    if (typeof logdata.data === 'string' && logdata.data.startsWith('ERROR:')) {
       alert('ERROR with getting login data')
+    } else {
+      setLogin(logdata.data.user)
     }
   }
 
   const logout = async () => {
-    try {
-      await axios.post('/account/logout')
-      history.push('/login')
-    } catch (err) {
+    const data = await axios.post('/account/logout')
+    if (typeof data.data === 'string' && data.data.startsWith('ERROR:')) {
       alert('ERROR logging out')
+    } else {
+      history.push('/')
+      getLog()
     }
   }
 
@@ -54,11 +55,11 @@ const Home = () => {
   }
 
   const getData = async () => {
-    try {
-      const data = await axios.get('/api/questions')
-      setQuestion(data.data)
-    } catch (err) {
+    const data = await axios.get('/api/questions')
+    if (typeof data.data === 'string' && data.data.startsWith('ERROR:')) {
       alert('ERROR getting data')
+    } else {
+      setQuestion(data.data)
     }
   }
 

@@ -10,12 +10,12 @@ const QuestionModal = props => {
   const [questionText, setQuestion] = useState('')
   const { showState, hide } = props
   const submitQuestion = async () => {
-    try {
-      await axios.post('/api/questions/add', { questionText })
+    const data = await axios.post('/api/questions/add', { questionText })
+    if (typeof data.data === 'string' && data.data.startsWith('ERROR:')) {
+      alert('ERROR while filling in question. Please try again')
+    } else {
       setQuestion('')
       hide()
-    } catch (err) {
-      alert('ERROR while filling in question. Please try again')
     }
   }
   return (
